@@ -1,0 +1,16 @@
+<%- include('../partials/head') %> <%- include('../partials/navbar') %>
+
+<main class="profile-page">
+  <section class="card glass">
+    <h2>Profile</h2>
+    <p><strong>Name:</strong> <%= user.name %></p>
+    <p><strong>Email:</strong> <%= user.email %></p>
+  </section>
+
+  <section class="card glass">
+    <h2>Preferences</h2>
+    <p>Dark mode: <%= user.darkMode ? 'Enabled' : 'Disabled' %></p>
+  </section>
+</main>
+
+<%- include('../partials/footer') %>

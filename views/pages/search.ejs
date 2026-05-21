@@ -1,0 +1,84 @@
+<%- include('../partials/head') %>
+<%- include('../partials/navbar') %>
+
+<main class="search-page" data-page-data="<%= encodeURIComponent(JSON.stringify({
+  query: query || '',
+  results: results || [],
+  searchError: searchError || ''
+})) %>">
+  <section class="search-toolbar glass">
+    <form id="search-form" class="search-bar" action="/search" method="get">
+      <input name="q" value="<%= query || '' %>" placeholder="Search city, pincode, or cafe" aria-label="Search cafes">
+      <button type="submit">Search</button>
+    </form>
+    <div id="search-suggestions" class="suggestions" hidden></div>
+    <div class="filter-chips" role="toolbar" aria-label="Primary filters">
+      <button type="button" class="chip" data-filter="wifi">WiFi</button>
+      <button type="button" class="chip" data-filter="quiet">Quiet</button>
+      <button type="button" class="chip" data-filter="vegan">Vegan</button>
+      <button type="button" class="chip" data-filter="outdoorSeating">Outdoor</button>
+      <button type="button" class="chip" data-filter="codingFriendly">Coding</button>
+      <button type="button" class="chip" data-filter="fastInternet">Fast Net</button>
+      <button type="button" class="chip reset" data-filter="reset" aria-hidden="true">Reset</button>
+    </div>
+  </section>
+
+  <div class="search-layout">
+    <aside class="search-left glass">
+      <div class="results-head">
+        <h2>Results</h2>
+        <span><%= (results || []).length %> cafes</span>
+      </div>
+      <% if (searchError) { %>
+        <div class="empty-state error-state">
+          <div class="empty-icon">!</div>
+          <div>
+            <h3>Search service unavailable</h3>
+            <p><%= searchError %></p>
+            <button type="button" id="retry-search" class="retry-button">Retry search</button>
+          </div>
+        </div>
+      <% } else if (query && !(results || []).length) { %>
+        <div class="empty-state">
+          <div class="empty-icon">☕</div>
+          <div>
+            <h3>No cafes found</h3>
+            <p>We couldn’t find cafes for “<%= query %>”. Try a nearby city, a different pincode, or fewer filters.</p>
+            <button type="button" id="retry-search" class="retry-button">Try again</button>
+          </div>
+        </div>
+      <% } %>
+      <div id="results-loading" class="results-list" hidden>
+        <% for (var i = 0; i < 5; i++) { %>
+          <article class="result card hover-card skeleton-card">
+            <div class="skeleton-block skeleton-title"></div>
+            <div class="skeleton-block skeleton-line"></div>
+            <div class="skeleton-block skeleton-line short"></div>
+          </article>
+        <% } %>
+      </div>
+      <div id="results" class="results-list">
+        <% (results || []).forEach(function(r){ %>
+          <article class="result card hover-card">
+            <div>
+              <h3><a href="/cafes/details/<%= r.placeId %>"><%= r.name %></a></h3>
+              <p><%= r.address || r.displayName || '' %></p>
+            </div>
+            <div class="result-meta">
+              <span><%= r.rating ? r.rating.toFixed ? r.rating.toFixed(1) : r.rating : 'New' %></span>
+            </div>
+          </article>
+        <% }) %>
+      </div>
+    </aside>
+    <aside class="search-map glass">
+      <div id="map" class="map-container map-surface"></div>
+    </aside>
+  </div>
+</main>
+
+<script src="/js/maps.js"></script>
+<script src="/js/filters.js"></script>
+<script src="/js/search-page.js"></script>
+
+<%- include('../partials/footer') %>

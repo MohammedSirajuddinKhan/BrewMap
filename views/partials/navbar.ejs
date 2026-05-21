@@ -1,0 +1,18 @@
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="/">BrewMap</a>
+    <form class="search-form" action="/search" method="get" role="search">
+      <input name="q" placeholder="Search cafes, city, or pincode" aria-label="Search">
+      <button type="submit">Search</button>
+    </form>
+    <div class="nav-actions">
+      <% if (user) { %>
+        <a href="/users/dashboard">Saved</a>
+        <a href="/auth/logout">Logout</a>
+      <% } else { %>
+        <a href="/auth/login">Login</a>
+        <a href="/auth/register">Sign up</a>
+      <% } %>
+    </div>
+  </div>
+</nav>

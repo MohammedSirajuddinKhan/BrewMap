@@ -1,0 +1,9 @@
+/* Home page specific styles */
+
+.home-hero {
+  padding: 2rem;
+}
+
+.home .card-grid {
+  margin-top: 0.75rem;
+}

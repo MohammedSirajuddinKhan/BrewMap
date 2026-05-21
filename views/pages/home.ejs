@@ -1,0 +1,57 @@
+<%- include('../partials/head') %>
+<%- include('../partials/navbar') %>
+
+<main class="home">
+  <section class="hero glass hero-split" data-page-data="<%= encodeURIComponent(JSON.stringify({
+    featured: [...(topRated || []), ...(trending || [])]
+  })) %>">
+    <div class="hero-left">
+      <p class="eyebrow">Open map discovery</p>
+      <h1>BrewMap</h1>
+      <p>Find the best cafes for coding, studying, and relaxing using Leaflet, OpenStreetMap, Nominatim, and Overpass.</p>
+      <form class="search-bar glass" action="/search" method="get">
+        <input name="q" placeholder="Search a city, pincode, or cafe" aria-label="Search cafes">
+        <button type="submit">Search</button>
+      </form>
+      <div id="home-suggestions" class="suggestions" hidden></div>
+      <div class="chip-row">
+        <a class="chip" href="/search?q=study%20cafes">Study</a>
+        <a class="chip" href="/search?q=quiet%20cafes">Quiet</a>
+        <a class="chip" href="/search?q=wifi%20cafe">WiFi</a>
+        <a class="chip" href="/search?q=vegan%20cafe">Vegan</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div id="map" class="map-container map-surface"></div>
+    </div>
+  </section>
+
+  <section class="section cards">
+    <h2>Top Rated</h2>
+    <div class="card-grid">
+      <% (topRated || []).forEach(function(c){ %>
+        <article class="card">
+          <h3><a href="/cafes/details/<%= c.placeId %>"><%= c.name %></a></h3>
+          <p><%= c.address %></p>
+        </article>
+      <% }) %>
+    </div>
+  </section>
+
+  <section class="section cards">
+    <h2>Trending</h2>
+    <div class="card-grid">
+      <% (trending || []).forEach(function(c){ %>
+        <article class="card">
+          <h3><a href="/cafes/details/<%= c.placeId %>"><%= c.name %></a></h3>
+          <p><%= c.address %></p>
+        </article>
+      <% }) %>
+    </div>
+  </section>
+</main>
+
+<script src="/js/maps.js"></script>
+<script src="/js/home-page.js"></script>
+
+<%- include('../partials/footer') %>

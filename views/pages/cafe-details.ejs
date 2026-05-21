@@ -1,0 +1,77 @@
+<%- include('../partials/head') %> <%- include('../partials/navbar') %>
+
+<main class="cafe-page" data-page-data="<%= encodeURIComponent(JSON.stringify({
+  cafe: cafe,
+  place: place || null
+})) %>">
+  <section class="cafe-hero glass">
+    <div class="cafe-hero-left">
+      <h1><%= cafe.name %></h1>
+      <p class="muted"><%= cafe.address %></p>
+      <div class="meta">
+        <span>Rating: <strong><%= cafe.rating %></strong></span>
+        <span>Price: <%= cafe.priceLevel || '-' %></span>
+      </div>
+      <p class="vibe"><%= vibe %></p>
+      <div class="actions">
+        <button class="btn">Save</button>
+        <a class="btn ghost" href="#">Directions</a>
+      </div>
+    </div>
+    <div class="cafe-hero-right">
+      <div id="map" class="map-container map-surface"></div>
+    </div>
+  </section>
+
+  <section class="section gallery">
+    <h2>Photos</h2>
+    <div class="photo-grid">
+      <% (cafe.photos || []).forEach(function(p){ %>
+        <div class="photo">
+          <img src="<%= p.url %>" alt="<%= cafe.name %>">
+        </div>
+      <% }) %>
+    </div>
+
+    <% if (user && (String(user.id) === String(cafe.createdBy) || user.role === 'admin')) { %>
+      <form action="/cafes/<%= cafe._id %>/images" method="post" enctype="multipart/form-data" class="upload-form">
+        <label>Upload photo</label>
+        <input type="file" name="image" accept="image/*">
+        <button type="submit">Upload</button>
+      </form>
+    <% } %>
+  </section>
+
+  <section class="section">
+    <h2>Reviews</h2>
+    <div id="reviews-placeholder">No reviews yet.</div>
+
+    <% if (user) { %>
+      <form action="/reviews" method="post" enctype="multipart/form-data" class="review-form">
+        <input type="hidden" name="cafeId" value="<%= cafe._id %>">
+        <label>Rating</label>
+        <select name="rating">
+          <option value="5">5</option>
+          <option value="4">4</option>
+          <option value="3">3</option>
+          <option value="2">2</option>
+          <option value="1">1</option>
+        </select>
+        <label>Title</label>
+        <input name="title">
+        <label>Comment</label>
+        <textarea name="comment"></textarea>
+        <label>Photos</label>
+        <input type="file" name="images" multiple accept="image/*">
+        <button type="submit">Submit Review</button>
+      </form>
+    <% } else { %>
+      <p><a href="/auth/login">Login</a> to submit a review.</p>
+    <% } %>
+  </section>
+</main>
+
+<script src="/js/maps.js"></script>
+<script src="/js/cafe-details-page.js"></script>
+
+<%- include('../partials/footer') %>

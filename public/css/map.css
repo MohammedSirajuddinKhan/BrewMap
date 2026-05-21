@@ -1,0 +1,21 @@
+/* Map related styles */
+
+.map-container {
+  width: 100%;
+  height: 500px;
+}
+
+.leaflet-container {
+  font-family: inherit;
+}
+
+.leaflet-control-zoom a,
+.leaflet-bar a {
+  border-radius: 10px;
+}
+
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.14);
+}
